@@ -1,0 +1,9 @@
+dependencies {
+    compile project(':moorish-core'),
+            project(':moorish-component'),
+            project(':moorish-docking'),
+            project(':moorish-grid'),
+            project(':moorish-window')
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
