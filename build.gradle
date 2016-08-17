@@ -1,0 +1,75 @@
+plugins {
+    id 'com.palantir.git-version' version '0.5.2'
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'com.palantir.git-version'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+
+    sourceCompatibility = 1.8
+
+    group 'br.com.baobatech.moorish'
+    def details = versionDetails()
+    version = "${details.lastTag}.${details.commitDistance}.${details.gitHash}-SNAPSHOT"
+}
+
+subprojects {
+    // Include code analysis in all subprojects
+
+    task initConfig(type: Copy) {
+        doLast {
+            println 'copy file'
+            from('src/main/java') {
+                include '**/*.properties'
+                include '**/*.xml'
+                include '**/*.fxml'
+            }
+            into 'build/classes/main'
+            exclude '**/*.java'
+
+            includeEmptyDirs = false
+        }
+    }
+}
+
+idea {
+    project {
+        jdkName = '1.8'
+        languageLevel = '1.8'
+    }
+}
+
+// Added compile dependencies for all subprojects to moorish-core
+// but exclude moorish-core to avoid cyclic dependency
+configure(subprojects.findAll { it.name != 'moorish-core' }) {
+    dependencies {
+        compile project(':moorish-core')
+    }
+}
+
+ext {
+    File propertiesFile = new File("${project.rootDir}", 'git.properties')
+    propertiesFile.text = """git_commit_id=${versionDetails().gitHash}"""
+}
+
+// Create a moorish-all that included all sub-project classes
+subprojects.each { subproject -> evaluationDependsOn(subproject.path) }
+task allJar(type: Jar, dependsOn: subprojects.tasks['build']) {
+    baseName = 'moorish-all'
+    subprojects.each { subproject ->
+        from subproject.configurations.archives.allArtifacts.files.collect {
+            zipTree(it)
+        }
+    }
+}
+artifacts {
+    archives allJar
+}

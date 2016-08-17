@@ -1,0 +1,8 @@
+rootProject.name = 'moorish'
+include 'moorish-component'
+include 'moorish-core'
+include 'moorish-docking'
+include 'moorish-grid'
+include 'moorish-window'
+include 'moorish-sample'
+

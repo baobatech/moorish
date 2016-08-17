@@ -1,0 +1,18 @@
+
+# Java Files #
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+
+# build
+.gradle/
+build/
+gradlew*
+git.properties
+
+# IntelliJ files
+*.ipr
+*.iws
+*.iml

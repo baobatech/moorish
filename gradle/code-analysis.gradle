@@ -1,0 +1,94 @@
+apply plugin: 'pmd'
+apply plugin: 'findbugs'
+apply plugin: 'checkstyle'
+
+/**
+ * ===========================
+ * PMD Configuration
+ * ===========================
+ */
+
+/**
+ * PMD Versioning
+ */
+pmd {
+    toolVersion = '5.5.0'
+}
+
+/**
+ * PMD setup for main source
+ */
+pmdMain {
+    ignoreFailures = true
+    ruleSetFiles = files("$rootProject.projectDir/gradle/code_analysis_pmd_ruleset.xml")
+}
+
+/**
+ * PMD setup for tests
+ */
+pmdTest {
+    ignoreFailures = true
+    ruleSetFiles = files("$rootProject.projectDir/gradle/code_analysis_pmd_ruleset.xml")
+}
+
+/**
+ * ===========================
+ * FindBugs Configuration
+ * ===========================
+ */
+
+/**
+ * FindBugs versioning
+ */
+findbugs {
+    toolVersion = '3.0.1'
+}
+
+/**
+ * FindBugs setup for main source
+ */
+findbugsMain {
+    ignoreFailures = true
+    effort = "default"
+    reportLevel = "medium"
+}
+
+/**
+ * FindBugs setup for tests
+ */
+findbugsTest {
+    ignoreFailures = true
+    effort = "default"
+    reportLevel = "medium"
+}
+
+/**
+ * ===========================
+ * CheckStyle Configuration
+ * ===========================
+ */
+
+/**
+ * CheckStyle versioning
+ */
+checkstyle {
+    toolVersion = '7.1'
+}
+
+/**
+ * CheckStyle setup for main source
+ */
+checkstyleMain {
+    ignoreFailures = true
+    showViolations = false
+    configFile = file("$rootProject.projectDir/gradle/code_analysis_checkstyle.xml")
+}
+
+/**
+ * CheckStyle setup for tests
+ */
+checkstyleTest {
+    ignoreFailures = true
+    showViolations = false
+    configFile = file("$rootProject.projectDir/gradle/code_analysis_checkstyle.xml")
+}
